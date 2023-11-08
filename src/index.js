@@ -4,8 +4,8 @@ import './index.css';
 import App from './views/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ListaFuncionarios from './views/ListaFuncionarios';
 import Home from './page/Home';
+import CadastroDomicilio from './page/CadastroDomicilio';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,7 +13,8 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cadastros/setor" element={<App />} />
-        <Route path="dados/funcionarios/" element={<ListaFuncionarios />} />
+        <Route path="/cadastros/domicilio" element={<CadastroDomicilio />} />
+
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

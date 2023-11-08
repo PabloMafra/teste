@@ -40,10 +40,10 @@ const Botao = props => {
 
 const useStyles = makeStyles(theme => ({
   botao: {
-    backgroundColor: props => (props.type === 'primary' ? 'rgb(123, 40, 110)' : 'rgb(123, 40, 110)'),
+    backgroundColor: props => (props.type === 'primary' ? '#00B5F1' : '#00B5F1'),
     textTransform: props => (props.uppercase ? 'uppercase' : 'none'),
     '&:hover': {
-      backgroundColor: props => (props.type === 'primary' ? 'rgb(123, 40, 110)' : 'rgb(123, 40, 110)')
+      backgroundColor: props => (props.type === 'primary' ? '#00B5F1' : '#00B5F1')
     },
     color: props => (props.type === 'primary' ? 'white' : 'white'),
     width: '100%',

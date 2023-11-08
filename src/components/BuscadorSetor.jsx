@@ -5,36 +5,29 @@ import { Grid } from '@material-ui/core';
 import CampoBusca from './shared/CampoBusca';
 import axios from 'axios';
 
-const Buscador = () => {
+const BuscadorSetor = () => {
     const classes = useStyles();
-    const [nome, setNome] = useState('');
-    const [funcionarios, setFuncionarios] = useState([]);
+    const [nomeSetor, setNomeSetor] = useState('');
 
     const listarFuncionarios = async () => {
         try {
             const response = await axios.post('https://localhost:7024/api/setor/cadastro', {
-                Nome: nome
+                Nome: nomeSetor
             });
-            console.log(nome)
+            console.log(nomeSetor)
             console.log(response)
-            const listaFuncionarios = response.data;
-            if(response.status === 200){
-                alert('teste')
+
+            if (response.status === 200) {
+                alert('status 200 ok')
             }
 
-            if (listaFuncionarios.length > 0) {
-                setFuncionarios(listaFuncionarios);
-            } else {
-                setFuncionarios([{ nome: 'Nenhum funcionário encontrado' }]);
-            }
         } catch (error) {
             console.error('Erro na solicitação:', error);
-            setFuncionarios([{ nome: 'Erro na solicitação' }]);
         }
     }
-    
+
     const handleInputChange = (event) => {
-        setNome(event.target.value);
+        setNomeSetor(event.target.value);
     }
 
     return (
@@ -42,7 +35,7 @@ const Buscador = () => {
             <Grid container justifyContent={'center'}>
                 <Grid item xs={8}>
                     <CampoBusca
-                        value={nome}
+                        value={nomeSetor}
                         onChange={handleInputChange}
                         label={"Nome setor"}
                     />
@@ -76,4 +69,4 @@ const useStyles = makeStyles({
     },
 });
 
-export default Buscador;
+export default BuscadorSetor;

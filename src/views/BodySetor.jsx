@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
@@ -18,16 +18,16 @@ import SouthAmericaIcon from '@mui/icons-material/SouthAmerica';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import CampoBusca from './CampoBusca';
+import CampoBusca from '../components/shared/CampoBusca';
 import { makeStyles } from '@material-ui/styles';
-import Botao from './Botao';
+import Botao from '../components/shared/Botao';
 import { Grid } from '@mui/material';
-import Buscador from '../Buscador';
+import BuscadorSetor from '../components/BuscadorSetor';
 
 
 const drawerWidth = 240;
 
-function MenuLateral(props) {
+function BodySetor(props) {
   const { window, label } = props;
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -124,25 +124,25 @@ function MenuLateral(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Buscador/>
+        <BuscadorSetor />
       </Box>
 
-      </Box>
+    </Box>
   );
 }
 
-MenuLateral.propTypes = {
+BodySetor.propTypes = {
   window: PropTypes.func,
 };
 
 const useStyles = makeStyles({
-    titulo: {
-        position: 'absolute',
-    },
-    containerTitulo: {
-        background: 'rgb(123, 40, 110)'
-    }
+  titulo: {
+    position: 'absolute',
+  },
+  containerTitulo: {
+    background: '#00B5F1'
+  }
 });
 
 
-export default MenuLateral;
+export default BodySetor;

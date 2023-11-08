@@ -1,9 +1,9 @@
 import '../App.css';
-import Funcionarios from '../page/Funcionarios';
+import BodySetor from './BodySetor';
 
 function App() {
   return (
-    <Funcionarios/>
+    <BodySetor />
   );
 }
 
