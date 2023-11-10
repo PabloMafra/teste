@@ -84,7 +84,7 @@ function BodySetor(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={classes.titulo} component="div">
-                        Cadastros
+                        Domicílio
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -124,6 +124,18 @@ function BodySetor(props) {
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
+                <Grid container justifyContent={'end'}>
+                    <Grid item xs={2}>
+                        <Typography>
+                            Consultar
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Typography>
+                            Cadastrar
+                        </Typography>
+                    </Grid>
+                </Grid>
                 <BuscadorDomicilio />
             </Box>
 

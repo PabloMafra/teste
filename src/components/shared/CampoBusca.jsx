@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
       width: '100%',
-      marginBottom: '50px'
+      marginBottom: '30px'
     },
   },
 }));
