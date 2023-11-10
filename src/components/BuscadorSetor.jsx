@@ -9,7 +9,7 @@ const BuscadorSetor = () => {
     const classes = useStyles();
     const [nomeSetor, setNomeSetor] = useState('');
 
-    const listarFuncionarios = async () => {
+    const cadastrarSetor = async () => {
         try {
             const response = await axios.post('https://localhost:7024/api/setor/cadastro', {
                 Nome: nomeSetor
@@ -18,7 +18,7 @@ const BuscadorSetor = () => {
             console.log(response)
 
             if (response.status === 200) {
-                alert('status 200 ok')
+                setNomeSetor('')
             }
 
         } catch (error) {
@@ -43,7 +43,7 @@ const BuscadorSetor = () => {
                 <Grid item xs={6}>
                     <Botao
                         titulo={"Cadastrar"}
-                        onClick={listarFuncionarios}
+                        onClick={cadastrarSetor}
                     />
                 </Grid>
             </Grid>

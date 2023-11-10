@@ -15,18 +15,24 @@ export default function SelectSetor({onSelect}) {
     setSelecao(valorSelecionado);
     onSelect(valorSelecionado);
   };
+
   useEffect(() =>{
     const buscarSetor = async () => {
+      try {
         const resposta = await axios.get('https://localhost:7024/api/setor/listar');
-        console.log(resposta)
-    
+        console.log(resposta);
+
         if (resposta.status === 200) {
-            alert('status 200 ok')
-            setSetorList(resposta.data);
+          console.error('Sucesso');
+          setSetorList(resposta.data);
         }
-    }
+      } catch (error) {
+        console.error('Erro', error);
+      }
+    };
 
     buscarSetor();
+
   },[])
 
   return (
