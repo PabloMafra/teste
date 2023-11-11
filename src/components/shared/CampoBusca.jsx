@@ -14,6 +14,12 @@ const useStyles = makeStyles((theme) => ({
 const CampoBusca = ({ value, onChange, label, readOnly, disabled }) => {
   const classes = useStyles();
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <form className={classes.root} noValidate autoComplete="off">
       <TextField
@@ -22,7 +28,11 @@ const CampoBusca = ({ value, onChange, label, readOnly, disabled }) => {
         variant="outlined"
         value={value}
         onChange={onChange}
-        InputProps={{readOnly: readOnly, disabled: disabled}}
+        InputProps={{
+          readOnly: readOnly,
+          disabled: disabled
+        }}
+        onKeyPress={handleKeyPress}
       />
     </form>
   );

@@ -14,13 +14,30 @@ const BuscaDomicilio = () => {
     const classes = useStyles();
     const [modalAberto, setModalAberto] = useState(false);
     const [busca, setBusca] = useState('');
-
+    const [resposta, setResposta] = useState(null)
+    const [botaoAtivo, setBotaoAtivo] = useState(true)
+    
+    useEffect(() => {
+        if(busca){
+            setBotaoAtivo(false)
+        }else{
+            setBotaoAtivo(true)
+        }
+    },[busca])
 
     const handleInputChange = (event, setStateFunction) => {
         setStateFunction(event.target.value);
     };
 
-
+    const buscarDomicilio = async () => {
+        try {
+          const resultado = await DomicilioRepository.BuscarDomicilio(busca);
+          setResposta(resultado.data)
+        } catch (error) {
+          console.error("Erro ao buscar domicílio:", error);
+        }
+    };
+    console.log(resposta)
     return (
         <Grid container className={classes.container} justifyContent={'center'}>
             <Grid container justifyContent={'space-evenly'}>
@@ -34,12 +51,14 @@ const BuscaDomicilio = () => {
                 <Grid item >
                     <Botao
                         titulo={"Buscar"}
-                        disabled={false}
+                        disabled={botaoAtivo}
                         className={classes.botao}
+                        onClick={buscarDomicilio}
                     />
                 </Grid>
             </Grid>
-            <TabelaDomicilio/>
+            <TabelaDomicilio
+            data={resposta}/>
             <BasicModal 
             isOpen={modalAberto} 
             onClose={() => setModalAberto(false)} 
