@@ -18,17 +18,16 @@ import SouthAmericaIcon from '@mui/icons-material/SouthAmerica';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import CampoBusca from '../components/shared/CampoBusca';
 import { makeStyles } from '@material-ui/styles';
-import Botao from '../components/shared/Botao';
 import { Grid } from '@mui/material';
 import BuscadorDomicilio from '../components/BuscadorDomicilio';
-
+import { azulClaro } from '../components/shared/Utils/constantes';
+import logo from '../logo.png';
 
 const drawerWidth = 240;
 
 function BodySetor(props) {
-    const { window, label } = props;
+    const { window } = props;
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
     const handleDrawerToggle = () => {
@@ -37,7 +36,11 @@ function BodySetor(props) {
 
     const drawer = (
         <div>
-            <Toolbar />
+            <Grid container justifyContent={'center'}>
+                <Grid item style={{padding: '15px'}}>
+                    <img src={logo} alt={'Logo'} />
+                </Grid>
+            </Grid>
             <Divider />
             <List>
                 {[
@@ -152,7 +155,8 @@ const useStyles = makeStyles({
         position: 'absolute',
     },
     containerTitulo: {
-        background: '#00B5F1'
+        background: azulClaro,
+        height: '83px'
     }
 });
 

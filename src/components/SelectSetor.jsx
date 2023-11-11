@@ -20,14 +20,16 @@ export default function SelectSetor({onSelect}) {
     const buscarSetor = async () => {
       try {
         const resposta = await axios.get('https://localhost:7024/api/setor/listar');
-        console.log(resposta);
 
         if (resposta.status === 200) {
-          console.error('Sucesso');
           setSetorList(resposta.data);
+        }else{
+          setSetorList([]);
         }
+
       } catch (error) {
         console.error('Erro', error);
+        setSetorList([]);
       }
     };
 
@@ -46,6 +48,11 @@ export default function SelectSetor({onSelect}) {
           label="Setor"
           onChange={handleChange}
         >
+          {setorList.length === 0 && (
+            <MenuItem value="" disabled>
+              Resultado Não Encontrado
+            </MenuItem>
+          )}
           {setorList.map((setor) => (
             <MenuItem key={setor.id} value={setor.id}>
               {setor.nome}

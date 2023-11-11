@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Botao from './shared/Botao';
 import { Grid } from '@material-ui/core';
 import CampoBusca from './shared/CampoBusca';
 import axios from 'axios';
 import SelectSetor from './SelectSetor';
+import BasicModal from './Modal';
 
 const BuscadorSetor = () => {
     const classes = useStyles();
@@ -19,8 +20,14 @@ const BuscadorSetor = () => {
     const [base, setBase] = useState('');
     const [angulo, setAngulo] = useState('');
     const [valorSelecionado, setValorSelecionado] = useState('');
+    const [resultado, setResultado] = useState('');
+    const [modalAberto, setModalAberto] = useState(false);
 
-    const listarFuncionarios = async () => {
+    const handleClose = () => {
+        setModalAberto(false);
+    };
+
+    const cadastroDomicilio = async () => {
         try {
             const response = await axios.post('https://localhost:7024/api/endereco/cadastro', {
                 Cep: cep,
@@ -33,16 +40,47 @@ const BuscadorSetor = () => {
                 Coordenadas: coordenadas,
                 Altura: altura,
                 Base: base,
-                AnguloInclinacao: angulo
+                AnguloInclinacao: angulo,
+                VolumeBacia: resultado
             });
             console.log(response)
 
             if (response.status === 200) {
-                alert('status 200 ok')
+                setModalAberto(true);
+                setRua('');
+                setBairro('');
+                setNumero('');
+                setCep('');
+                setEstado('');
+                setCidade('');
+                setCoordenadas('');
+                setAltura('');
+                setBase('');
+                setAngulo('');
+                setValorSelecionado('');
+                setResultado('');
             }
 
         } catch (error) {
             console.error('Erro na solicitação:', error);
+        }
+    }
+
+    const calcularVolume = async () => {
+        try{
+            const response = await axios.get('https://localhost:7024/api/endereco/calcular-volume', {
+                params:{
+                    Altura: altura,
+                    Base: base,
+                    AnguloInclinacao: angulo
+                }
+            })
+
+            const resultadoConvertido = response.data.replace(',', '.');
+
+            setResultado(resultadoConvertido)    
+        }catch(error){
+            console.error('Erro no cálculo:', error);
         }
     }
 
@@ -58,8 +96,29 @@ const BuscadorSetor = () => {
         setNumero(event.target.value);
     }
 
-    const handleInputChangeCep = (event) => {
-        setCep(event.target.value);
+    const handleInputChangeCep = async (event) => {
+        const inputCep = event.target.value;
+        setCep(inputCep);
+
+        if (/^\d{8}$/.test(inputCep)) {
+            try {
+                const response = await axios.get(`https://viacep.com.br/ws/${inputCep}/json/`);
+
+                if (response.data && !response.data.erro) {
+                    setRua(response.data.logradouro || '');
+                    setBairro(response.data.bairro || '');
+                    setEstado(response.data.uf || '');
+                    setCidade(response.data.localidade || '');
+                } else {
+                    setRua('');
+                    setBairro('');
+                    setEstado('');
+                    setCidade('');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar informações do CEP:', error);
+            }
+        }
     }
 
     const handleInputChangeEstado = (event) => {
@@ -88,8 +147,11 @@ const BuscadorSetor = () => {
 
     const handleSelecao = (valor) => {
         setValorSelecionado(valor);
-        console.log(valor);
     };
+
+    useEffect(()=>{
+        setResultado('');
+    },[altura, base, angulo])
 
     return (
         <Grid container className={classes.container} justifyContent={'center'}>
@@ -122,7 +184,7 @@ const BuscadorSetor = () => {
                     <CampoBusca
                         value={numero}
                         onChange={handleInputChangeNumero}
-                        label={"Número Residência"}
+                        label={"Nº Residência"}
                     />
                 </Grid>
             </Grid>
@@ -161,38 +223,59 @@ const BuscadorSetor = () => {
             </Grid>
 
             <Grid container xs={10} justifyContent={'space-between'}>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                     <CampoBusca
                         value={altura}
                         onChange={handleInputChangeAltura}
                         label={"Altura"}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
                     <CampoBusca
                         value={base}
                         onChange={handleInputChangeBase}
                         label={"Base"}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                     <CampoBusca
                         value={angulo}
                         onChange={handleInputChangeAngulo}
-                        label={"Angulo Inclinação"}
+                        label={"Inclinação"}
+                    />
+                </Grid>
+                <Grid item xs={2}>
+                    <CampoBusca
+                        value={resultado}
+                        label={"Volume Bacia"}
+                        readOnly={true}
+                        disabled={true}
+                    />
+                </Grid>
+                <Grid item xs={2}>
+                    <Botao
+                        titulo={"Calcular"}
+                        onClick={calcularVolume}
+                        onSelect={handleSelecao}
+                        className={classes.botao}
+                        disabled={!altura || !base || !angulo}
                     />
                 </Grid>
             </Grid>
 
-
-
             <Grid container xs={4}>
                 <Botao
                     titulo={"Cadastrar"}
-                    onClick={listarFuncionarios}
+                    onClick={cadastroDomicilio}
                     onSelect={handleSelecao}
+                    disabled={!resultado}
                 />
             </Grid>
+            <BasicModal 
+            isOpen={modalAberto} 
+            onClose={() => setModalAberto(false)} 
+            titulo={'Sucesso!'}
+            texto={'Domicílio cadastrado com sucesso'}/>
         </Grid>
     );
 }

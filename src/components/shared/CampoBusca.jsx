@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CampoBusca = ({ value, onChange, label }) => {
+const CampoBusca = ({ value, onChange, label, readOnly, disabled }) => {
   const classes = useStyles();
 
   return (
@@ -22,6 +22,7 @@ const CampoBusca = ({ value, onChange, label }) => {
         variant="outlined"
         value={value}
         onChange={onChange}
+        InputProps={{readOnly: readOnly, disabled: disabled}}
       />
     </form>
   );

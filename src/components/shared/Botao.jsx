@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { azulRoial } from './Utils/constantes';
 
 const Botao = props => {
   const classes = useStyles(props);
@@ -40,10 +41,10 @@ const Botao = props => {
 
 const useStyles = makeStyles(theme => ({
   botao: {
-    backgroundColor: props => (props.type === 'primary' ? '#00B5F1' : '#00B5F1'),
+    backgroundColor: props => (props.type === 'primary' ? azulRoial : azulRoial),
     textTransform: props => (props.uppercase ? 'uppercase' : 'none'),
     '&:hover': {
-      backgroundColor: props => (props.type === 'primary' ? '#00B5F1' : '#00B5F1')
+      backgroundColor: props => (props.type === 'primary' ? azulRoial : azulRoial)
     },
     color: props => (props.type === 'primary' ? 'white' : 'white'),
     width: '100%',
