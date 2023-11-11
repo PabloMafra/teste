@@ -42,7 +42,7 @@ function BodySetor(props) {
       <List>
         {[
           { text: 'Setor', path: '/cadastros/setor' },
-          { text: 'Domicílio', path: '/cadastros/domicilio' },
+          { text: 'Domicílio', path: '/domicilio' },
           { text: 'Estoque', path: '/cadastros/estoque' },
         ].map((item, index) => (
           <ListItem key={item.text} disablePadding>

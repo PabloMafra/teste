@@ -6,8 +6,10 @@ import CampoBusca from './shared/CampoBusca';
 import axios from 'axios';
 import SelectSetor from './SelectSetor';
 import BasicModal from './Modal';
+import DomicilioRepository from '../repository/DomicilioRepository';
+import CalcularVolumeRepository from '../repository/CalcularVolumeRepository';
 
-const BuscadorSetor = () => {
+const CadastroDomicilio = () => {
     const classes = useStyles();
     const [rua, setRua] = useState('');
     const [bairro, setBairro] = useState('');
@@ -22,28 +24,28 @@ const BuscadorSetor = () => {
     const [valorSelecionado, setValorSelecionado] = useState('');
     const [resultado, setResultado] = useState('');
     const [modalAberto, setModalAberto] = useState(false);
+    const botaoCadastro = (!resultado || !cep || !rua || !bairro || !numero || !estado || !cidade || !valorSelecionado || !coordenadas || !altura || !base || !angulo);
 
-    const handleClose = () => {
-        setModalAberto(false);
-    };
+    useEffect(()=>{
+        setResultado('');
+    },[altura, base, angulo])
 
     const cadastroDomicilio = async () => {
         try {
-            const response = await axios.post('https://localhost:7024/api/endereco/cadastro', {
-                Cep: cep,
-                Rua: rua,
-                Bairro: bairro,
-                Numero: numero,
-                Estado: estado,
-                Cidade: cidade,
-                IdSetor: valorSelecionado,
-                Coordenadas: coordenadas,
-                Altura: altura,
-                Base: base,
-                AnguloInclinacao: angulo,
-                VolumeBacia: resultado
-            });
-            console.log(response)
+            const response = await DomicilioRepository.CadastrarDomicilio(
+                cep,
+                rua,
+                bairro,
+                numero,
+                estado,
+                cidade,
+                valorSelecionado,
+                coordenadas,
+                altura,
+                base,
+                angulo,
+                resultado
+            )
 
             if (response.status === 200) {
                 setModalAberto(true);
@@ -68,32 +70,12 @@ const BuscadorSetor = () => {
 
     const calcularVolume = async () => {
         try{
-            const response = await axios.get('https://localhost:7024/api/endereco/calcular-volume', {
-                params:{
-                    Altura: altura,
-                    Base: base,
-                    AnguloInclinacao: angulo
-                }
-            })
+            const response = await CalcularVolumeRepository.CalcularVolume(altura, base, angulo);
 
-            const resultadoConvertido = response.data.replace(',', '.');
-
-            setResultado(resultadoConvertido)    
+            setResultado(response)    
         }catch(error){
             console.error('Erro no cálculo:', error);
         }
-    }
-
-    const handleInputChangeRua = (event) => {
-        setRua(event.target.value);
-    }
-
-    const handleInputChangeBairro = (event) => {
-        setBairro(event.target.value);
-    }
-
-    const handleInputChangeNumero = (event) => {
-        setNumero(event.target.value);
     }
 
     const handleInputChangeCep = async (event) => {
@@ -121,37 +103,13 @@ const BuscadorSetor = () => {
         }
     }
 
-    const handleInputChangeEstado = (event) => {
-        setEstado(event.target.value);
-    }
-
-    const handleInputChangeCidade = (event) => {
-        setCidade(event.target.value);
-    }
-
-    const handleInputChangeCoordenadas = (event) => {
-        setCoordenadas(event.target.value);
-    }
-
-    const handleInputChangeAltura = (event) => {
-        setAltura(event.target.value);
-    }    
-    
-    const handleInputChangeBase = (event) => {
-        setBase(event.target.value);
-    }
-
-    const handleInputChangeAngulo = (event) => {
-        setAngulo(event.target.value);
-    }
+    const handleInputChange = (event, setStateFunction) => {
+        setStateFunction(event.target.value);
+    };
 
     const handleSelecao = (valor) => {
         setValorSelecionado(valor);
     };
-
-    useEffect(()=>{
-        setResultado('');
-    },[altura, base, angulo])
 
     return (
         <Grid container className={classes.container} justifyContent={'center'}>
@@ -166,7 +124,7 @@ const BuscadorSetor = () => {
                 <Grid item xs={5}>
                     <CampoBusca
                         value={rua}
-                        onChange={handleInputChangeRua}
+                        onChange={(e) => handleInputChange(e, setRua)}
                         label={"Rua"}
                     />
                 </Grid>
@@ -176,14 +134,14 @@ const BuscadorSetor = () => {
                 <Grid item xs={5}>
                     <CampoBusca
                         value={bairro}
-                        onChange={handleInputChangeBairro}
+                        onChange={(e) => handleInputChange(e, setBairro)}
                         label={"Bairro"}
                     />
                 </Grid>
                 <Grid item xs={5}>
                     <CampoBusca
                         value={numero}
-                        onChange={handleInputChangeNumero}
+                        onChange={(e) => handleInputChange(e, setNumero)}
                         label={"Nº Residência"}
                     />
                 </Grid>
@@ -193,14 +151,14 @@ const BuscadorSetor = () => {
                 <Grid item xs={5}>
                     <CampoBusca
                         value={estado}
-                        onChange={handleInputChangeEstado}
+                        onChange={(e) => handleInputChange(e, setEstado)}
                         label={"Estado"}
                     />
                 </Grid>
                 <Grid item xs={5}>
                     <CampoBusca
                         value={cidade}
-                        onChange={handleInputChangeCidade}
+                        onChange={(e) => handleInputChange(e, setCidade)}
                         label={"Cidade"}
                     />
                 </Grid>
@@ -215,7 +173,7 @@ const BuscadorSetor = () => {
                 <Grid item xs={5}>
                     <CampoBusca
                         value={coordenadas}
-                        onChange={handleInputChangeCoordenadas}
+                        onChange={(e) => handleInputChange(e, setCoordenadas)}
                         label={"Coordenadas"}
                     />
                 </Grid>
@@ -226,21 +184,21 @@ const BuscadorSetor = () => {
                 <Grid item xs={2}>
                     <CampoBusca
                         value={altura}
-                        onChange={handleInputChangeAltura}
+                        onChange={(e) => handleInputChange(e, setAltura)}
                         label={"Altura"}
                     />
                 </Grid>
                 <Grid item xs={2}>
                     <CampoBusca
                         value={base}
-                        onChange={handleInputChangeBase}
+                        onChange={(e) => handleInputChange(e, setBase)}
                         label={"Base"}
                     />
                 </Grid>
                 <Grid item xs={2}>
                     <CampoBusca
                         value={angulo}
-                        onChange={handleInputChangeAngulo}
+                        onChange={(e) => handleInputChange(e, setAngulo)}
                         label={"Inclinação"}
                     />
                 </Grid>
@@ -268,7 +226,7 @@ const BuscadorSetor = () => {
                     titulo={"Cadastrar"}
                     onClick={cadastroDomicilio}
                     onSelect={handleSelecao}
-                    disabled={!resultado}
+                    disabled={botaoCadastro}
                 />
             </Grid>
             <BasicModal 
@@ -282,7 +240,7 @@ const BuscadorSetor = () => {
 
 const useStyles = makeStyles({
     container: {
-        padding: '10px',
+        padding: '50px 10px 0px 10px',
     },
     content: {
         padding: '20px'
@@ -296,4 +254,4 @@ const useStyles = makeStyles({
     },
 });
 
-export default BuscadorSetor;
+export default CadastroDomicilio;

@@ -20,16 +20,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@mui/material';
-import BuscadorDomicilio from '../components/BuscadorDomicilio';
 import { azulClaro } from '../components/shared/Utils/constantes';
 import logo from '../logo.png';
+import CadastroDomicilio from '../components/CadastroDomicilio';
+import BuscaDomicilio from '../components/BuscaDomicilio';
 
 const drawerWidth = 240;
 
-function BodySetor(props) {
+function BodyDomicilio(props) {
     const { window } = props;
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [teste, setTeste] = useState(true);
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -45,7 +48,7 @@ function BodySetor(props) {
             <List>
                 {[
                     { text: 'Setor', path: '/cadastros/setor' },
-                    { text: 'Domicílio', path: '/cadastros/domicilio' },
+                    { text: 'Domicílio', path: '/domicilio' },
                     { text: 'Estoque', path: '/cadastros/estoque' },
                 ].map((item, index) => (
                     <ListItem key={item.text} disablePadding>
@@ -127,26 +130,15 @@ function BodySetor(props) {
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
-                <Grid container justifyContent={'end'}>
-                    <Grid item xs={2}>
-                        <Typography>
-                            Consultar
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Typography>
-                            Cadastrar
-                        </Typography>
-                    </Grid>
-                </Grid>
-                <BuscadorDomicilio />
+                {teste ? (<BuscaDomicilio/>) : <CadastroDomicilio/>}
+                
             </Box>
 
         </Box>
     );
 }
 
-BodySetor.propTypes = {
+BodyDomicilio.propTypes = {
     window: PropTypes.func,
 };
 
@@ -161,4 +153,4 @@ const useStyles = makeStyles({
 });
 
 
-export default BodySetor;
+export default BodyDomicilio;
