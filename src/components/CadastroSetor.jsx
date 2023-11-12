@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 import CampoBusca from './shared/CampoBusca';
 import axios from 'axios';
 
-const BuscadorSetor = () => {
+const CadastroSetor = () => {
     const classes = useStyles();
     const [nomeSetor, setNomeSetor] = useState('');
 
@@ -31,18 +31,19 @@ const BuscadorSetor = () => {
     }
 
     return (
-        <Grid container className={classes.container}>
-            <Grid container justifyContent={'center'}>
-                <Grid item xs={8}>
+        <Grid container className={classes.container} justifyContent={'center'}>
+            <Grid container justifyContent={'space-evenly'}>
+                <Grid item xs={10}>
                     <CampoBusca
                         value={nomeSetor}
                         onChange={handleInputChange}
-                        label={"Nome setor"}
+                        label={"Cadastre um setor"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item >
                     <Botao
                         titulo={"Cadastrar"}
+                        className={classes.botao}
                         onClick={cadastrarSetor}
                     />
                 </Grid>
@@ -53,7 +54,7 @@ const BuscadorSetor = () => {
 
 const useStyles = makeStyles({
     container: {
-        padding: '10px',
+        padding: '30px 10px 0px 10px',
     },
     content: {
         padding: '20px'
@@ -63,10 +64,8 @@ const useStyles = makeStyles({
         justifyContent: 'end'
     },
     botao: {
-        padding: '0 30px 0 30px',
-        marginTop: '8px',
-        marginBottom: '8px'
+        padding: '15px',
     },
 });
 
-export default BuscadorSetor;
+export default CadastroSetor;

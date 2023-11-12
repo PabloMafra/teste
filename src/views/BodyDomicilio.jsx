@@ -24,6 +24,7 @@ import { azulClaro } from '../components/shared/Utils/constantes';
 import logo from '../logo.png';
 import CadastroDomicilio from '../components/CadastroDomicilio';
 import BuscaDomicilio from '../components/BuscaDomicilio';
+import Botao from '../components/shared/Botao';
 
 const drawerWidth = 240;
 
@@ -31,7 +32,7 @@ function BodyDomicilio(props) {
     const { window } = props;
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [teste, setTeste] = useState(true);
+    const [ehConsulta, setehConsulta] = useState(false);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -47,9 +48,9 @@ function BodyDomicilio(props) {
             <Divider />
             <List>
                 {[
-                    { text: 'Setor', path: '/cadastros/setor' },
+                    { text: 'Setor', path: '/setor' },
                     { text: 'Domicílio', path: '/domicilio' },
-                    { text: 'Estoque', path: '/cadastros/estoque' },
+                    { text: 'Estoque', path: '/estoque' },
                 ].map((item, index) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton component={NavLink} to={item.path} activeClassName="Mui-selected">
@@ -130,7 +131,25 @@ function BodyDomicilio(props) {
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
-                {teste ? (<BuscaDomicilio/>) : <CadastroDomicilio/>}
+                <Grid container style={{paddingTop: '15px'}} xs={12} justifyContent={'end'}>
+                    <Grid item>
+                        <Botao
+                            titulo={'Cadastrar'}
+                            className={classes.botaoCadastro}
+                            onClick={() => setehConsulta(false)}
+                            disabled={!ehConsulta}
+                        />
+                    </Grid>
+                    <Grid item>
+                    <Botao
+                        titulo={'Consulta'}
+                        className={classes.botaoConsulta}
+                        disabled={ehConsulta}
+                        onClick={() => setehConsulta(true)}
+                    />
+                    </Grid>
+                </Grid>
+                {ehConsulta ? (<BuscaDomicilio/>) : <CadastroDomicilio/>}
                 
             </Box>
 
@@ -149,6 +168,34 @@ const useStyles = makeStyles({
     containerTitulo: {
         background: azulClaro,
         height: '83px'
+    },
+    botaoCadastro: {
+        background: 'white',
+        color: 'black',
+        '&:hover': {
+            background:'white',
+            boxShadow: 'none',
+            borderBottom: '0.1px solid black',
+            borderRight: '0.1px solid black'
+        },
+        boxShadow: 'none',
+        borderBottom: '0.1px solid black',
+        borderRight: '0.1px solid black',
+        borderRadius: 'none'
+
+    },
+    botaoConsulta: {
+        background: 'white',
+        color: 'black',
+        '&:hover': {
+            background:'white',
+            boxShadow: 'none',
+            borderBottom: '0.1px solid black',
+        },
+        boxShadow: 'none',
+        borderBottom: '0.1px solid black',
+        borderRadius: 'none'
+
     }
 });
 

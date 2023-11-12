@@ -12,7 +12,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cadastros/setor" element={<App />} />
+        <Route path="/setor" element={<App />} />
         <Route path="/domicilio" element={<CadastroDomicilio />} />
 
       </Routes>

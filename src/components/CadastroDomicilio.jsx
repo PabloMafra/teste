@@ -240,7 +240,7 @@ const CadastroDomicilio = () => {
 
 const useStyles = makeStyles({
     container: {
-        padding: '50px 10px 0px 10px',
+        padding: '30px 10px 0px 10px',
     },
     content: {
         padding: '20px'
