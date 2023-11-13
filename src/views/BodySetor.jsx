@@ -22,9 +22,10 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@mui/material';
 import { azulClaro } from '../components/shared/Utils/constantes';
 import logo from '../logo.png';
-import CadastroDomicilio from '../components/CadastroDomicilio';
-import CadastroSetor from '../components/CadastroSetor';
+import CadastroDomicilio from '../components/Domicilio/CadastroDomicilio';
+import CadastroSetor from '../components/Setor/CadastroSetor';
 import Botao from '../components/shared/Botao';
+import BuscaSetor from '../components/Setor/BuscaSetor';
 
 const drawerWidth = 240;
 
@@ -91,7 +92,7 @@ function BodySetor(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={classes.titulo} component="div">
-                        Domicílio
+                        Setor
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -134,7 +135,7 @@ function BodySetor(props) {
                 <Grid container style={{paddingTop: '15px'}} xs={12} justifyContent={'end'}>
                     <Grid item>
                         <Botao
-                            titulo={'Cadastrar'}
+                            titulo={'Cadastro'}
                             className={classes.botaoCadastro}
                             onClick={() => setehConsulta(false)}
                             disabled={!ehConsulta}
@@ -149,7 +150,7 @@ function BodySetor(props) {
                     />
                     </Grid>
                 </Grid>
-                {ehConsulta ? (<CadastroSetor/>) : <CadastroSetor/>}
+                {ehConsulta ? (<BuscaSetor/>) : <CadastroSetor/>}
                 
             </Box>
 
@@ -175,14 +176,13 @@ const useStyles = makeStyles({
         '&:hover': {
             background:'white',
             boxShadow: 'none',
-            borderBottom: '0.1px solid black',
-            borderRight: '0.1px solid black'
+            borderRadius: '0px !important'
         },
+        borderRight: '1px solid #d6d6d6',
         boxShadow: 'none',
-        borderBottom: '0.1px solid black',
-        borderRight: '0.1px solid black',
-        borderRadius: 'none'
-
+        borderBottom: '1px solid #d6d6d6',
+        borderRadius: '4px 0 0 4px !important',
+        padding: '5px 30px 5px 30px'
     },
     botaoConsulta: {
         background: 'white',
@@ -190,13 +190,13 @@ const useStyles = makeStyles({
         '&:hover': {
             background:'white',
             boxShadow: 'none',
-            borderBottom: '0.1px solid black',
+            borderRadius: '0px !important'
         },
         boxShadow: 'none',
-        borderBottom: '0.1px solid black',
-        borderRadius: 'none'
-
-    }
+        borderBottom: '1px solid #d6d6d6',
+        borderRadius: '0 4px 4px 0 !important',
+        padding: '5px 30px 5px 30px'
+    },
 });
 
 

@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import Botao from './shared/Botao';
+import Botao from '../shared/Botao';
 import { Grid } from '@material-ui/core';
-import CampoBusca from './shared/CampoBusca';
+import CampoBusca from '../shared/CampoBusca';
 import axios from 'axios';
+import BasicModal from '../Modal';
+import SetorRepository from '../../repository/SetorRepository';
 
 const CadastroSetor = () => {
     const classes = useStyles();
     const [nomeSetor, setNomeSetor] = useState('');
+    const [modalAberto, setModalAberto] = useState(false);
 
     const cadastrarSetor = async () => {
         try {
-            const response = await axios.post('https://localhost:7024/api/setor/cadastro', {
-                Nome: nomeSetor
-            });
-            console.log(nomeSetor)
-            console.log(response)
+            const response = await SetorRepository.CadastrarSetor(nomeSetor);
 
             if (response.status === 200) {
+                setModalAberto(true)
                 setNomeSetor('')
             }
 
@@ -48,6 +48,12 @@ const CadastroSetor = () => {
                     />
                 </Grid>
             </Grid>
+            <BasicModal
+            isOpen={modalAberto} 
+            onClose={() => setModalAberto(false)} 
+            titulo={'Sucesso!'}
+            texto={`O setor foi cadastrado.`}/>
+
         </Grid>
     );
 }
