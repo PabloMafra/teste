@@ -34,7 +34,7 @@ const CadastroDomicilio = () => {
         try {
             const response = await DomicilioRepository.CadastrarDomicilio(
                 cep,
-                rua,
+                `${rua}, ${numero}`,
                 bairro,
                 numero,
                 estado,

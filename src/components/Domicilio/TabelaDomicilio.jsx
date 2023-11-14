@@ -24,6 +24,7 @@ import CampoBusca from '../shared/CampoBusca';
 import CampoBuscaAlteracao from '../shared/CampoBuscaAlteracao';
 import CheckIcon from '@mui/icons-material/Check';
 import SelectSetor from '../SelectSetor';
+import BasicModal from '../Modal';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -118,7 +119,8 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
     const [rua, setRua] = useState('');
     const [coordenada, setCoordenada] = useState('');
     const [valorSelecionado, setValorSelecionado] = useState('');
-
+    const [modalAberto, setModalAberto] = useState(false);
+    const [idToDelete, setIdToDelete] = useState(null);
 
     useEffect(() => {
       setLoading(!data || data.length === 0);
@@ -152,11 +154,16 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
         
         setData(novosDados.data);
         setPage(0)
+        setModalAberto(false);
       }catch(error){
         console.error(error)
       }
     }
 
+    const handleDelete = (id) => {
+      setIdToDelete(id);
+      setModalAberto(true);
+    };
 
     const EditarDomicilio = async (id, idSetor, rua, coordenada) =>{
       try{
@@ -221,8 +228,8 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
                                       />
                 ) 
                 : (<span className={classes.textoEllipsis} style={{ width: '100%' }}>
-                    <Tooltip title={`${row.rua} - ${row.numero}`}>
-                        {`${row.rua} - ${row.numero}`}
+                    <Tooltip title={row.rua}>
+                      {row.rua}
                     </Tooltip>
                   </span>)}
               </TableCell>
@@ -253,7 +260,7 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
                   <Grid item>
                     {alteracao[row.id] ? (<CheckIcon 
                     style={{fontSize: '20px', cursor: 'pointer', marginRight: '10px', color: '#00ff00'}}
-                    onClick={() => EditarDomicilio(row.id, valorSelecionado, rua, coordenada)}
+                    onClick={() => EditarDomicilio(row.id, valorSelecionado == null || valorSelecionado === 0 ? row.idSetor : valorSelecionado, rua === null || rua === '' ? row.endereco : rua, coordenada === null || coordenada === '' ? row.coordenadas : coordenada)}
                     />) : (<EditIcon 
                     style={{fontSize: '20px', cursor: 'pointer', marginRight: '10px'}}
                     onClick={() => handleAlteracao(row.id)}
@@ -291,6 +298,12 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
             </TableRow>
           </TableFooter>
         </Table>
+        <BasicModal
+          doisBotoes={true}
+          isOpen={false} 
+          onClose={() => setModalAberto(false)} 
+          titulo={'Atenção!'}
+          texto={'Tem certeza que deseja deletar?'}/>
       </TableContainer>) : (<Typography>teste</Typography>)
     );
   }

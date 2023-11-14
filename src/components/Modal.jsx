@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Botao from './shared/Botao';
+import { Grid } from '@mui/material';
+import { makeStyles } from '@material-ui/styles';
 
 const style = {
   position: 'absolute',
@@ -22,7 +23,9 @@ const style = {
   alignItems: 'center'
 };
 
-export default function BasicModal({ isOpen, onClose, titulo, texto }) {
+export default function BasicModal({ isOpen, onClose, titulo, texto, doisBotoes }) {
+  const classes = useStyles();
+
   return (
     <div>
       <Modal
@@ -38,12 +41,26 @@ export default function BasicModal({ isOpen, onClose, titulo, texto }) {
           <Typography id="modal-modal-description" sx={{ mt: 2 }} style={{marginBottom: '40px'}}>
             {texto}
           </Typography>
-          <Botao
-            titulo={'Fechar'}
-            onClick={onClose}
-          />
+          {doisBotoes ? (
+            <Grid container justifyContent={'space-evenly'}>
+              <Grid item xs={5}>
+                <Botao titulo={'Fechar'} onClick={onClose} className={classes.botaoFechar}/>
+              </Grid>
+              <Grid item xs={5}>
+                <Botao titulo={'Confirmar'} onClick={onClose} />
+              </Grid>
+            </Grid>
+          ) : (
+            <Botao titulo={'Fechar'} onClick={onClose} className={classes.botaoFechar} />
+          )}
         </Box>
       </Modal>
     </div>
   );
 }
+
+const useStyles = makeStyles({
+  botaoFechar: {
+    background: 'red',
+  },
+});

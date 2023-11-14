@@ -46,7 +46,7 @@ const BuscaDomicilio = () => {
                     <CampoBusca
                         value={busca}
                         onChange={(e) => handleInputChange(e, setBusca)}
-                        label={"Busque por Endereço, Setor, Bairro ou Cidade"}
+                        label={"Busque o domicílio por setor"}
                     />
                 </Grid>
                 <Grid item >
