@@ -70,7 +70,7 @@ const BuscaSetor = () => {
 
 const useStyles = makeStyles({
     container: {
-        padding: '30px 10px 0px 10px',
+        padding: '20px 10px 0px 10px',
     },
     content: {
         padding: '20px'
@@ -80,7 +80,7 @@ const useStyles = makeStyles({
         justifyContent: 'end'
     },
     botao: {
-        padding: '15px 24px',
+        padding: '15px 24.5px 15px 24.5px',
     },
 });
 

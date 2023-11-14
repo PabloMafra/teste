@@ -6,19 +6,19 @@ import CampoBusca from '../shared/CampoBusca';
 import axios from 'axios';
 import BasicModal from '../Modal';
 import SetorRepository from '../../repository/SetorRepository';
+import EstoqueRepository from '../../repository/EstoqueRepository';
 
-const CadastroSetor = () => {
+const CadastroEstoque = () => {
     const classes = useStyles();
-    const [nomeSetor, setNomeSetor] = useState('');
+    const [nomeEstoque, setNomeEstoque] = useState('');
     const [modalAberto, setModalAberto] = useState(false);
 
     const cadastrarSetor = async () => {
         try {
-            const response = await SetorRepository.CadastrarSetor(nomeSetor);
-
+            const response = await EstoqueRepository.CadastrarEstoque(nomeEstoque);
             if (response.status === 200) {
                 setModalAberto(true)
-                setNomeSetor('')
+                setNomeEstoque('')
             }
 
         } catch (error) {
@@ -27,7 +27,7 @@ const CadastroSetor = () => {
     }
 
     const handleInputChange = (event) => {
-        setNomeSetor(event.target.value);
+        setNomeEstoque(event.target.value);
     }
 
     return (
@@ -35,9 +35,10 @@ const CadastroSetor = () => {
             <Grid container justifyContent={'space-evenly'}>
                 <Grid item xs={10}>
                     <CampoBusca
-                        value={nomeSetor}
+                        value={nomeEstoque}
                         onChange={handleInputChange}
-                        label={"Cadastre um setor"}
+                        label={"Cadastre um recipiente (Em litros)"}
+                        estoque={true}
                     />
                 </Grid>
                 <Grid item >
@@ -52,7 +53,7 @@ const CadastroSetor = () => {
             isOpen={modalAberto} 
             onClose={() => setModalAberto(false)} 
             titulo={'Sucesso!'}
-            texto={`O setor foi cadastrado.`}/>
+            texto={`O recipiente foi cadastrado.`}/>
 
         </Grid>
     );
@@ -74,4 +75,4 @@ const useStyles = makeStyles({
     },
 });
 
-export default CadastroSetor;
+export default CadastroEstoque;

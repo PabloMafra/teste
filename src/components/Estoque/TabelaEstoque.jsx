@@ -15,16 +15,12 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import DomicilioRepository from '../../repository/DomicilioRepository';
-import { TableHead, Tooltip, Typography } from '@mui/material';
+import { Grid, TableHead, Tooltip } from '@mui/material';
 import { azulClaro, ufs } from '../shared/Utils/constantes';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Grid } from '@material-ui/core';
-import CampoBusca from '../shared/CampoBusca';
-import CampoBuscaAlteracao from '../shared/CampoBuscaAlteracao';
+import SelectSetor from './SelectEstoque';
+import SelectEstoque from './SelectEstoque';
 import CheckIcon from '@mui/icons-material/Check';
-import SelectSetor from '../SelectSetor';
-import BasicModal from '../Modal';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -107,20 +103,12 @@ const useStyles2 = makeStyles({
   },
 });
 
-export default function TabelaDomicilio({ data, filtro, setData }) {
+export default function TabelaEstoque({ data }) {
     const classes = useStyles2();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [loading, setLoading] = React.useState(!data || data.length === 0);
-    const [alteracao, setAlteracao] = useState(false);
-    const [busca, setBusca] = useState('');
-    const [id, setId] = useState(0);
-    const [idSetor, setIdSetor] = useState(0);
-    const [rua, setRua] = useState('');
-    const [coordenada, setCoordenada] = useState('');
     const [valorSelecionado, setValorSelecionado] = useState('');
-    const [modalAberto, setModalAberto] = useState(false);
-    const [idToDelete, setIdToDelete] = useState(null);
 
     useEffect(() => {
       setLoading(!data || data.length === 0);
@@ -138,7 +126,7 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
     };
   
     if (loading) {
-      return <Typography style={{color: 'grey'}}>Utilize o filtro para obter resultados</Typography>;
+      return '';
     }
   
     function TratarUf(value) {
@@ -146,64 +134,22 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
       return state ? state.label : value;
     }
 
-    const DeletarEndereco = async (id) => {
-      try{
-        await DomicilioRepository.DeletarDomicilio(id);
-
-        const novosDados = await DomicilioRepository.BuscarDomicilio(filtro);
-        
-        setData(novosDados.data);
-        setPage(0)
-        setModalAberto(false);
-      }catch(error){
-        console.error(error)
-      }
-    }
-
-    const handleDelete = (id) => {
-      setIdToDelete(id);
-      setModalAberto(true);
-    };
-
-    const EditarDomicilio = async (id, idSetor, rua, coordenada) =>{
-      try{
-        await DomicilioRepository.EditarDomicilio(id, 0, rua, '', 0, '', '', idSetor, coordenada, 0, 0, 0, 0);
-
-        const novosDados = await DomicilioRepository.BuscarDomicilio(filtro);
-        
-        setData(novosDados.data);
-        setPage(0);
-        setAlteracao(false);
-      }catch(error){
-        console.error(error)
-      }
-
-    }
-
-    const handleInputChange = (event, setStateFunction) => {
-      setStateFunction(event.target.value);
-    };
-
-    const handleAlteracao = (id) => {
-      setAlteracao((prevAlteracoes) => ({
-        ...prevAlteracoes,
-        [id]: !prevAlteracoes[id],
-      }));
-    };
     const handleSelecao = (valor) => {
-      setValorSelecionado(valor);
-    };
+        setValorSelecionado(valor);
+      };
+  
+    console.log(data)
     return (
-      data ? (<TableContainer component={Paper}>
+      <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableHead className={classes.tableHead}>
             <TableRow>
-              <TableCell>Setor</TableCell>
-              <TableCell>Endereço</TableCell>
-              <TableCell>Região</TableCell>
-              <TableCell>Coordenadas</TableCell>
-              <TableCell>Bacia</TableCell>
+              <TableCell>Litragem</TableCell>
+              <TableCell>Atribuir ao Domicílio</TableCell>
               <TableCell>Ações</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -212,69 +158,55 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
               : data || []
               ).map((row) => (
               <TableRow key={row.id}>
-                <TableCell style={{ minWidth: '112px', maxWidth: '50px' }} component="th" scope="row">
-                {alteracao[row.id] ? (<SelectSetor onSelect={handleSelecao}/>) : <span className={classes.textoEllipsis} style={{ minWidth: '50px', maxWidth: '100px' }}>
-                    <Tooltip title={row.nomeSetor}>
-                        {row.nomeSetor}
-                    </Tooltip>
-                </span>}
-              </TableCell>
-              <TableCell style={{ minWidth: '271px', maxWidth: '140px' }} component="th" scope="row">
-                {alteracao[row.id] ? (<CampoBuscaAlteracao 
-                                        label={"Ex: Rua, 123"}
-                                        value={rua}
-                                        onChange={(e) => handleInputChange(e, setRua)}
-                                      />
-                ) 
-                : (<span className={classes.textoEllipsis} style={{ width: '100%' }}>
-                    <Tooltip title={row.rua}>
-                      {row.rua}
-                    </Tooltip>
-                  </span>)}
-              </TableCell>
-              <TableCell style={{ minWidth: '170px', maxWidth: '195px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '140px' }}>
-                    <Tooltip title={`${row.cidade}/${row.estado}`}>
-                        {`${row.cidade}/${row.estado}`}
+                <TableCell style={{ minWidth: '86px', maxWidth: '50px' }} component="th" scope="row">
+                <span className={classes.textoEllipsis} style={{ minWidth: '50px', maxWidth: '100px' }}>
+                    <Tooltip title={row.litragem}>
+                        {`${row.litragem}L`}
                     </Tooltip>
                 </span>
               </TableCell>
-              <TableCell style={{ minWidth: '133px', maxWidth: '139px' }} component="th" scope="row">
-              {alteracao[row.id] ? (<CampoBuscaAlteracao value={coordenada} onChange={(e) => handleInputChange(e, setCoordenada)}/>) :
-                (<span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
-                    <Tooltip title={row.coordenadas}>
-                        {row.coordenadas}
-                    </Tooltip>
-                </span>)}
+              <TableCell style={{ minWidth: '271px', maxWidth: '140px' }} component="th" scope="row">
+                <SelectEstoque onSelect={handleSelecao}/>
               </TableCell>
-              <TableCell style={{ minWidth: '100px', maxWidth: '484px' }} component="th" scope="row">
-              <span className={classes.textoEllipsis} style={{ minWidth: '100px', maxWidth: '100px' }}>
-                <Tooltip title={row.volumeBacia}>
-                    {row.volumeBacia}
-                </Tooltip>
-              </span>
-              </TableCell>
-              <TableCell style={{ minWidth: '107px', maxWidth: '40px' }} component="th" scope="row">
-                <Grid container>
+              <TableCell style={{ minWidth: '170px', maxWidth: '195px' }} component="th" scope="row">
+              <Grid container>
                   <Grid item>
-                    {alteracao[row.id] ? (<CheckIcon 
+                    <CheckIcon
                     style={{fontSize: '20px', cursor: 'pointer', marginRight: '10px', color: '#00ff00'}}
-                    onClick={() => EditarDomicilio(row.id, valorSelecionado == null || valorSelecionado === 0 ? row.idSetor : valorSelecionado, rua === null || rua === '' ? row.endereco : rua, coordenada === null || coordenada === '' ? row.coordenadas : coordenada)}
-                    />) : (<EditIcon 
-                    style={{fontSize: '20px', cursor: 'pointer', marginRight: '10px'}}
-                    onClick={() => handleAlteracao(row.id)}
-                    />)}
+                    />
                     </Grid>
                     <Grid item>
                       <DeleteForeverIcon 
                         style={{fontSize: '20px', color: 'red', cursor: 'pointer'}}
-                        onClick={() => DeletarEndereco(row.id)}
                       />
                   </Grid>
                 </Grid>
               </TableCell>
+              <TableCell style={{ minWidth: '160px', maxWidth: '132px' }} component="th" scope="row">
+                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
+                    <Tooltip title={TratarUf(row.estado)}>
+                        {TratarUf(row.estado)}
+                    </Tooltip>
+                </span>
+              </TableCell>
+              <TableCell style={{ minWidth: '133px', maxWidth: '139px' }} component="th" scope="row">
+                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
+                    <Tooltip title={row.coordenadas}>
+                        {row.coordenadas}
+                    </Tooltip>
+                </span>
+              </TableCell>
+              <TableCell style={{ minWidth: '100px', maxWidth: '484px' }} component="th" scope="row">
+                <span className={classes.textoEllipsis} style={{ minWidth: '100px', maxWidth: '100px' }}>
+                    <Tooltip title={row.volumeBacia}>
+                        {row.volumeBacia}
+                    </Tooltip>
+                </span>
+              </TableCell>
+
               </TableRow>
             ))}
+
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
@@ -284,7 +216,7 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'Tudo', value: -1 }]}
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={3}
                 count={data ? data.length : 0}
                 rowsPerPage={rowsPerPage}
@@ -297,18 +229,10 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
             </TableRow>
           </TableFooter>
         </Table>
-        <BasicModal
-          doisBotoes={true}
-          isOpen={false} 
-          onClose={() => setModalAberto(false)} 
-          titulo={'Atenção!'}
-          texto={'Tem certeza que deseja deletar?'}/>
-      </TableContainer>) : (<Typography>teste</Typography>)
+      </TableContainer>
     );
   }
   
-  TabelaDomicilio.propTypes = {
+  TabelaEstoque.propTypes = {
     data: PropTypes.array,
-    filtro: PropTypes.any,
-    setData: PropTypes.any
   };

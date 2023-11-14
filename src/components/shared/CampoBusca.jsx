@@ -11,12 +11,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CampoBusca = ({ value, onChange, label, readOnly, disabled }) => {
+const CampoBusca = ({ value, onChange, label, readOnly, disabled, estoque }) => {
   const classes = useStyles();
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
+    }
+    if(estoque){
+      const isNumber = /^\d+$/;
+      if (!isNumber.test(event.key)) {
+        event.preventDefault();
+      }
     }
   };
 
@@ -30,7 +36,10 @@ const CampoBusca = ({ value, onChange, label, readOnly, disabled }) => {
         onChange={onChange}
         InputProps={{
           readOnly: readOnly,
-          disabled: disabled
+          disabled: disabled,
+          inputProps: {
+            pattern: '[0-9]*',
+          },
         }}
         onKeyPress={handleKeyPress}
       />

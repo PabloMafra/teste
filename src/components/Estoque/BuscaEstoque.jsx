@@ -8,13 +8,14 @@ import SelectSetor from '../SelectSetor';
 import BasicModal from '../Modal';
 import DomicilioRepository from '../../repository/DomicilioRepository';
 import CalcularVolumeRepository from '../../repository/CalcularVolumeRepository';
-import TabelaDomicilio from './TabelaDomicilio';
+import TabelaEstoque from './TabelaEstoque';
 import { Typography } from '@mui/material';
+import EstoqueRepository from '../../repository/EstoqueRepository';
 
-const BuscaDomicilio = () => {
+const BuscaEstoque = () => {
     const classes = useStyles();
     const [modalAberto, setModalAberto] = useState(false);
-    const [busca, setBusca] = useState('');
+    const [busca, setBusca] = useState(null);
     const [resposta, setResposta] = useState(null)
     const [botaoAtivo, setBotaoAtivo] = useState(true)
     
@@ -30,9 +31,9 @@ const BuscaDomicilio = () => {
         setStateFunction(event.target.value);
     };
 
-    const buscarDomicilio = async () => {
+    const buscarEstoque = async () => {
         try {
-          const resultado = await DomicilioRepository.BuscarDomicilio(busca);
+          const resultado = await EstoqueRepository.BuscarEstoque(busca);
           setResposta(resultado.data)
         } catch (error) {
           console.error("Erro ao buscar domicílio:", error);
@@ -46,19 +47,18 @@ const BuscaDomicilio = () => {
                     <CampoBusca
                         value={busca}
                         onChange={(e) => handleInputChange(e, setBusca)}
-                        label={"Busque o domicílio por setor"}
+                        label={"Busque o estoque"}
                     />
                 </Grid>
                 <Grid item >
                     <Botao
                         titulo={"Buscar"}
-                        disabled={botaoAtivo}
                         className={classes.botao}
-                        onClick={buscarDomicilio}
+                        onClick={buscarEstoque}
                     />
                 </Grid>
             </Grid>
-            <TabelaDomicilio
+            <TabelaEstoque
             data={resposta}
             filtro={busca}
             setData={setResposta}/>
@@ -87,4 +87,4 @@ const useStyles = makeStyles({
     },
 });
 
-export default BuscaDomicilio;
+export default BuscaEstoque;

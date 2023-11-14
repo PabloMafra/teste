@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './page/Home';
 import CadastroDomicilio from './page/CadastroDomicilio';
+import CadastroEstoque from './page/CadastroEstoque';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +15,7 @@ ReactDOM.render(
         <Route path="/" element={<Home />} />
         <Route path="/setor" element={<App />} />
         <Route path="/domicilio" element={<CadastroDomicilio />} />
-
+        <Route path="/estoque" element={<CadastroEstoque/>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
