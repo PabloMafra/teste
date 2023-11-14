@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { Grid } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from '@material-ui/styles';
@@ -6,6 +6,7 @@ import { azulClaro, azulRoial, verdeClaro } from "../components/shared/Utils/con
 
 const Home = () => {
     const classes = useStyles();
+    const [sobre, setSobre] = useState(false);
 
     useEffect(() => {
       document.body.style.backgroundColor = azulClaro;
@@ -14,25 +15,48 @@ const Home = () => {
       };
     }, []);
 
-    return(
-        <Grid container justifyContent="center">
-          <form className={classes.form}>
+    return (
+      <Grid container justifyContent="center">
+        <form className={sobre ? classes. form2 : classes.form}>
+          {sobre ? (
+            <Grid>
+              <p>
+                Integrantes:<br/><br/>
+                Camila Lima de Sousa Delazari Perazzolli - camilalsdeperazzolli@gmail.com<br/><br/>
+                Arthur Anjos Santos - arthuranjoscontato@gmail.com<br/><br/>
+                André Henrique Albergaria Tiburcio - tiburcio.mec@gmail.com<br/><br/>
+                Pablo Riquelme Mafra e Santos - 202108663875@alunos.estacio.br<br/><br/>
+                Ryan Abranches Bueno Ricardo
+              </p>
+              <NavLink to="/" className={classes.navLink} onClick={() => setSobre(false)}>
+              <div className={classes.inputContainer}>
+                <span className={classes.span}>Voltar</span>
+              </div>
+            </NavLink>
+          </Grid>
+          ) : (
+            <>
               <p className={classes.formTitle}>Bem vindo ao Projeto Guarda Chuva</p>
               <NavLink to="/setor" className={classes.navLink}>
                 <div className={classes.inputContainer}>
-                    <span className={classes.span}>Sistema</span>
+                  <span className={classes.span}>Sistema</span>
                 </div>
               </NavLink>
-              <br/>
-              <NavLink to="/sobre" className={classes.navLink}>
+              <br />
+              <NavLink
+                onClick={() => setSobre(true)}
+                className={classes.sobre}
+              >
                 <div className={classes.inputContainer}>
-                    <span className={classes.span}>Sobre</span>
+                  <span className={classes.span}>Sobre</span>
                 </div>
               </NavLink>
-          </form>
-        </Grid>
-    )
-}
+            </>
+          )}
+        </form>
+      </Grid>
+    );
+    }
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -103,6 +127,16 @@ const useStyles = makeStyles((theme) => ({
     span: {
         color: azulRoial,
         fontWeight: '900'
+    },
+    form2: {
+      display: 'block',
+      padding: '1rem',
+      maxWidth: 350,
+      borderRadius: '0.5rem',
+      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      height: '450px',
+      marginTop: '100px',
+      backgroundColor: 'white'
     }
   }));
 
