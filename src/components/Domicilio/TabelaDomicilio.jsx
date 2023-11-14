@@ -141,11 +141,6 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
       return <Typography style={{color: 'grey'}}>Utilize o filtro para obter resultados</Typography>;
     }
   
-    function TratarUf(value) {
-      const state = ufs.find((state) => state.value === value);
-      return state ? state.label : value;
-    }
-
     const DeletarEndereco = async (id) => {
       try{
         await DomicilioRepository.DeletarDomicilio(id);
@@ -174,6 +169,8 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
         setData(novosDados.data);
         setPage(0);
         setAlteracao(false);
+        setCoordenada('');
+        setRua('');
       }catch(error){
         console.error(error)
       }
@@ -260,6 +257,7 @@ export default function TabelaDomicilio({ data, filtro, setData }) {
                     {alteracao[row.id] ? (<CheckIcon 
                     style={{fontSize: '20px', cursor: 'pointer', marginRight: '10px', color: '#00ff00'}}
                     onClick={() => EditarDomicilio(row.id, valorSelecionado == null || valorSelecionado === 0 ? row.idSetor : valorSelecionado, rua === null || rua === '' ? row.endereco : rua, coordenada === null || coordenada === '' ? row.coordenadas : coordenada)}
+                    disabled={true}
                     />) : (<EditIcon 
                     style={{fontSize: '20px', cursor: 'pointer', marginRight: '10px'}}
                     onClick={() => handleAlteracao(row.id)}

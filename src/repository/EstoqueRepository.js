@@ -14,6 +14,23 @@ class EstoqueRepository {
             }
         });
     }
+
+    async AtribuirRecipiente(id, litragem, idEndereco){
+        return await axios.put('https://localhost:7024/api/estoque/atualizar', {
+            Id: id,
+            Litragem: litragem,
+            IdEndereco: idEndereco
+        });
+    }
+
+    async DeletarEstoque(id){
+        return await axios.delete('https://localhost:7024/api/estoque/deletar',{
+            params:{
+                id: id
+            }
+        })
+    }
+
 }
 
 export default new EstoqueRepository();

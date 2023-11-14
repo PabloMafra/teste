@@ -2,12 +2,13 @@ import React, {useEffect} from "react";
 import { Grid } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from '@material-ui/styles';
+import { azulClaro, azulRoial, verdeClaro } from "../components/shared/Utils/constantes";
 
 const Home = () => {
     const classes = useStyles();
 
     useEffect(() => {
-      document.body.style.backgroundColor = "cadetblue";
+      document.body.style.backgroundColor = azulClaro;
       return () => {
         document.body.style.backgroundColor = "";
       };
@@ -16,16 +17,16 @@ const Home = () => {
     return(
         <Grid container justifyContent="center">
           <form className={classes.form}>
-              <p className={classes.formTitle}>Seja bem vindo ao Projeto Guarda Chuva</p>
-              <NavLink to="/cadastros/setor" className={classes.navLink}>
+              <p className={classes.formTitle}>Bem vindo ao Projeto Guarda Chuva</p>
+              <NavLink to="/setor" className={classes.navLink}>
                 <div className={classes.inputContainer}>
-                    <span className={classes.span}>Cadastro</span>
+                    <span className={classes.span}>Sistema</span>
                 </div>
               </NavLink>
               <br/>
-              <NavLink to="/dados/funcionarios" className={classes.navLink}>
+              <NavLink to="/sobre" className={classes.navLink}>
                 <div className={classes.inputContainer}>
-                    <span className={classes.span}>Associação</span>
+                    <span className={classes.span}>Sobre</span>
                 </div>
               </NavLink>
           </form>
@@ -42,14 +43,14 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       height: '450px',
       marginTop: '100px',
-      backgroundColor: '#989ec7'
+      backgroundColor: azulRoial
     },
     formTitle: {
       fontSize: '1.25rem',
       lineHeight: '1.75rem',
       fontWeight: 600,
       textAlign: 'center',
-      color: '#000',
+      color: 'white',
       marginTop: '66px',
       marginBottom: '100px'
     },
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
       position: 'relative',
       paddingBottom: '10px',
       paddingTop: '10px',
-      backgroundColor: 'rgb(123, 40, 110)',
+      backgroundColor: verdeClaro,
       textAlign: 'center',
       borderRadius: '10px',
       width: '345px'
@@ -100,7 +101,8 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
     span: {
-        color: 'white',
+        color: azulRoial,
+        fontWeight: '900'
     }
   }));
 

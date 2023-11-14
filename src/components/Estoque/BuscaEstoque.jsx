@@ -34,12 +34,14 @@ const BuscaEstoque = () => {
     const buscarEstoque = async () => {
         try {
           const resultado = await EstoqueRepository.BuscarEstoque(busca);
-          setResposta(resultado.data)
+
+            const resultadosFiltrados = resultado.data.filter((item) => item.idEndereco === 0);
+            setResposta(resultadosFiltrados);
         } catch (error) {
           console.error("Erro ao buscar domicílio:", error);
         }
-    };
-    console.log(resposta)
+      };
+      
     return (
         <Grid container className={classes.container} justifyContent={'center'}>
             <Grid container justifyContent={'space-evenly'}>

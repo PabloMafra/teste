@@ -135,11 +135,6 @@ export default function TabelaSetor({ data }) {
           <TableHead className={classes.tableHead}>
             <TableRow>
               <TableCell>Nome</TableCell>
-              <TableCell>Endereços Relacionados (nº)</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -148,49 +143,13 @@ export default function TabelaSetor({ data }) {
               : data || []
               ).map((row) => (
               <TableRow key={row.id}>
-                <TableCell style={{ minWidth: '86px', maxWidth: '50px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '50px', maxWidth: '100px' }}>
+                <TableCell style={{ minWidth: '100%', maxWidth: '100%' }} component="th" scope="row">
+                <span className={classes.textoEllipsis} style={{ minWidth: '100%', maxWidth: '100%' }}>
                     <Tooltip title={row.nome}>
                         {row.nome}
                     </Tooltip>
                 </span>
               </TableCell>
-              <TableCell style={{ minWidth: '271px', maxWidth: '140px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ width: '100%' }}>
-                    <Tooltip title={`${row.rua} - ${row.numero}`}>
-                        {`${row.rua} - ${row.numero}`}
-                    </Tooltip>
-                </span>
-              </TableCell>
-              <TableCell style={{ minWidth: '170px', maxWidth: '195px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
-                    <Tooltip title={row.cidade}>
-                        {row.cidade}
-                    </Tooltip>
-                </span>
-              </TableCell>
-              <TableCell style={{ minWidth: '160px', maxWidth: '132px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
-                    <Tooltip title={TratarUf(row.estado)}>
-                        {TratarUf(row.estado)}
-                    </Tooltip>
-                </span>
-              </TableCell>
-              <TableCell style={{ minWidth: '133px', maxWidth: '139px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
-                    <Tooltip title={row.coordenadas}>
-                        {row.coordenadas}
-                    </Tooltip>
-                </span>
-              </TableCell>
-              <TableCell style={{ minWidth: '100px', maxWidth: '484px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '100px', maxWidth: '100px' }}>
-                    <Tooltip title={row.volumeBacia}>
-                        {row.volumeBacia}
-                    </Tooltip>
-                </span>
-              </TableCell>
-
               </TableRow>
             ))}
 

@@ -21,6 +21,8 @@ import SelectSetor from './SelectEstoque';
 import SelectEstoque from './SelectEstoque';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EstoqueRepository from '../../repository/EstoqueRepository';
+import BasicModal from '../Modal';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -109,6 +111,7 @@ export default function TabelaEstoque({ data }) {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [loading, setLoading] = React.useState(!data || data.length === 0);
     const [valorSelecionado, setValorSelecionado] = useState('');
+    const [modalAberto, setModalAberto] = useState(false);
 
     useEffect(() => {
       setLoading(!data || data.length === 0);
@@ -129,15 +132,40 @@ export default function TabelaEstoque({ data }) {
       return '';
     }
   
-    function TratarUf(value) {
-      const state = ufs.find((state) => state.value === value);
-      return state ? state.label : value;
-    }
-
     const handleSelecao = (valor) => {
         setValorSelecionado(valor);
-      };
-  
+    };
+    
+    const AtribuirRecipiente = async (id, litragem, idEndereco) => {
+      try{
+        await EstoqueRepository.AtribuirRecipiente(id, litragem, idEndereco);
+
+        setPage(0);
+        
+        RecarregarPagina();
+
+      }catch(error){
+        console.error(error)
+      }
+    }
+
+    const DeletarEstoque = async (id) => {
+      try{
+        await EstoqueRepository.DeletarEstoque(id);
+
+        setModalAberto(true)
+
+        setPage(0);
+      }catch(error){
+        console.error(error)
+      }
+    }
+
+    const RecarregarPagina = () => {
+      window.location.reload();
+      setModalAberto(false);
+    }
+
     console.log(data)
     return (
       <TableContainer component={Paper}>
@@ -146,10 +174,8 @@ export default function TabelaEstoque({ data }) {
             <TableRow>
               <TableCell>Litragem</TableCell>
               <TableCell>Atribuir ao Domicílio</TableCell>
+              <TableCell></TableCell>
               <TableCell>Ações</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -157,7 +183,7 @@ export default function TabelaEstoque({ data }) {
               ? (data || []).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
               : data || []
               ).map((row) => (
-              <TableRow key={row.id}>
+              row.idEndereco === 0 && (<TableRow key={row.id}>
                 <TableCell style={{ minWidth: '86px', maxWidth: '50px' }} component="th" scope="row">
                 <span className={classes.textoEllipsis} style={{ minWidth: '50px', maxWidth: '100px' }}>
                     <Tooltip title={row.litragem}>
@@ -165,46 +191,35 @@ export default function TabelaEstoque({ data }) {
                     </Tooltip>
                 </span>
               </TableCell>
-              <TableCell style={{ minWidth: '271px', maxWidth: '140px' }} component="th" scope="row">
+              <TableCell style={{ minWidth: '800px', maxWidth: '140px' }} component="th" scope="row">
                 <SelectEstoque onSelect={handleSelecao}/>
               </TableCell>
               <TableCell style={{ minWidth: '170px', maxWidth: '195px' }} component="th" scope="row">
+
+              </TableCell>
+              <TableCell style={{ minWidth: '133px', maxWidth: '139px' }} component="th" scope="row">
               <Grid container>
                   <Grid item>
                     <CheckIcon
                     style={{fontSize: '20px', cursor: 'pointer', marginRight: '10px', color: '#00ff00'}}
+                    onClick={() => AtribuirRecipiente(row.id, row.litragem, valorSelecionado)}
                     />
                     </Grid>
                     <Grid item>
                       <DeleteForeverIcon 
                         style={{fontSize: '20px', color: 'red', cursor: 'pointer'}}
+                        onClick={() => DeletarEstoque(row.id)}
                       />
                   </Grid>
                 </Grid>
               </TableCell>
-              <TableCell style={{ minWidth: '160px', maxWidth: '132px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
-                    <Tooltip title={TratarUf(row.estado)}>
-                        {TratarUf(row.estado)}
-                    </Tooltip>
-                </span>
-              </TableCell>
-              <TableCell style={{ minWidth: '133px', maxWidth: '139px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '107px', maxWidth: '107px' }}>
-                    <Tooltip title={row.coordenadas}>
-                        {row.coordenadas}
-                    </Tooltip>
-                </span>
-              </TableCell>
-              <TableCell style={{ minWidth: '100px', maxWidth: '484px' }} component="th" scope="row">
-                <span className={classes.textoEllipsis} style={{ minWidth: '100px', maxWidth: '100px' }}>
-                    <Tooltip title={row.volumeBacia}>
-                        {row.volumeBacia}
-                    </Tooltip>
-                </span>
-              </TableCell>
-
-              </TableRow>
+              <BasicModal
+                isOpen={modalAberto} 
+                onClose={RecarregarPagina} 
+                titulo={'Sucesso!'}
+                texto={'Recipiente deletado com sucesso'}
+                />
+              </TableRow>)
             ))}
 
             {emptyRows > 0 && (
